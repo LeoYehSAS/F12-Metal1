@@ -4,7 +4,6 @@ from keras.models import Sequential, load_model
 from keras.layers import Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling2D
 from keras.optimizers import rmsprop
 from keras.utils import np_utils
-#20190819
 
 #DATAPREP
 
