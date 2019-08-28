@@ -40,7 +40,7 @@ sasmm.generateMetrics(project, model, comparison_metrics_df, 'comparison_metrics
 
 
 # model saving
-pickle.dump(model_01, open("/tsmc_model/model_files/Model1.pkl", "wb"))
+pickle.dump(model_01, open("/tsmc_model/model_files/F12_Metal1_Model1.pkl", "wb"))
 
 #RT_METRICS:confusion_metrics_df
 #BT_METRICS:comparison_metrics_df
