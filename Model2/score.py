@@ -15,7 +15,7 @@ x_normalize = x_reshape / 255
 rd.seed(int(sum(x_normalize[0])))
 tmp = rd.randrange(0,1000)/ 10000
 # data scoring
-model = pickle.load(open("/tsmc_model/model_files/模型 1.pkl", "rb"))
+model = pickle.load(open("/tsmc_model/model_files/F12-Metal1-Model2.pkl", "rb"))
 # predict the desired label for the incoming image.
 y_pred = model.predict_classes(x_normalize)
 y_pred = str(y_pred[0])
