@@ -33,6 +33,6 @@ comparison_metrics_df = pd.DataFrame(comparison_metrics_dict, columns=['accuracy
 
 # model saving
 #pickle.dump(model_01, open("/tsmc_model/model_files/F12-Metal1-Model2.pkl", "wb"))
-model_01.save('/tsmc_model/model_files/F12-Metal1-Model3.h5')
+model_01.save('/tsmc_model/model_files/F12-Metal1-Model2.h5')
 #RT_METRICS:confusion_metrics_df
 #BT_METRICS:comparison_metrics_df
