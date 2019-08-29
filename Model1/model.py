@@ -29,18 +29,10 @@ score_01 = model_01.evaluate(payload_test_x, payload_test_y_oneHot)
 comparison_metrics_dict = {'accuracy': [score_01[1]]}
 comparison_metrics_df = pd.DataFrame(comparison_metrics_dict, columns=['accuracy'])
 
-
-
-import sasmm
-project = 'F12-Metal1'
-model = 'Model1'
-sasmm.generateMetrics(project, model, confusion_metrics_df, 'confusion_metrics')
-sasmm.generateMetrics(project, model, comparison_metrics_df, 'comparison_metrics') 
-
-
+#RT_METRICS:confusion_metrics_df
+#BT_METRICS:comparison_metrics_df
 
 # model saving
 pickle.dump(model_01, open("/tsmc_model/model_files/F12_Metal1_Model1.pkl", "wb"))
 
-#RT_METRICS:confusion_metrics_df
-#BT_METRICS:comparison_metrics_df
+
