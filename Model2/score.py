@@ -1,4 +1,7 @@
-def score(image_b64):
+#INPUT:image:string
+#OUTPUT:y:string
+#FUNCTION:score
+def score(image):
     import io, cv2, base64
     import pandas as pd
     import numpy as np
@@ -13,7 +16,7 @@ def score(image_b64):
 #         image_b64 = base64.b64encode(image_file.read())
 
     # convert byte to string
-    image_b64_utf8 = image_b64.decode("utf-8")
+    image_b64_utf8 = image.decode("utf-8")
 
     # convert string to byte
     image_b64_byte = str.encode(image_b64_utf8)
@@ -58,6 +61,6 @@ def score(image_b64):
     y_prob_dict['probability'][0] -= tmp
     
     tmp2 = {'y_pred': y_pred, 'y_prob': y_prob_dict}
-    y_json = json.dumps(tmp2)
+    y = json.dumps(tmp2)
     
-    return y_json
+    return y
