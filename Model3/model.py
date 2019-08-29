@@ -5,6 +5,9 @@ from keras.layers import Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling
 from keras.optimizers import rmsprop
 from keras.utils import np_utils
 
+#RT_METRICS:confusion_metrics_df
+#BT_METRICS:comparison_metrics_df
+
 #DATAPREP
 
 # model building
@@ -30,17 +33,7 @@ comparison_metrics_dict = {'accuracy': [score_01[1]]}
 comparison_metrics_df = pd.DataFrame(comparison_metrics_dict, columns=['accuracy'])
 
 
-
-import sasmm
-project = '影像辨識專案'
-model = '模型 1'
-sasmm.generateMetrics(project, model, confusion_metrics_df, 'confusion_metrics')
-sasmm.generateMetrics(project, model, comparison_metrics_df, 'comparison_metrics') 
-
-
-
 # model saving
-pickle.dump(model_01, open("/tsmc_model/model_files/模型 1.pkl", "wb"))
+pickle.dump(model_01, open("/tsmc_model/model_files/F12-Metal1-Model3.pkl", "wb"))
 
-#RT_METRICS:confusion_metrics_df
-#BT_METRICS:comparison_metrics_df
+
