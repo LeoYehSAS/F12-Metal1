@@ -1,3 +1,6 @@
+#INPUT:image_b64:string
+#OUTPUT:y_json:string
+#FUNCTION:score
 def score(image_b64):
     import io, cv2, base64
     import pandas as pd
