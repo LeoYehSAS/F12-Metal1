@@ -35,7 +35,8 @@ def score(image_b64):
 
 
     # 03_data scoring
-    model = pickle.load(open("/tsmc_model/model_files/模型 1.pkl", "rb"))
+    #model = pickle.load(open("/tsmc_model/model_files/模型 1.pkl", "rb"))
+    model = keras.models.load_model('/tsmc_model/model_files/F12-Metal1-Model2.h5')
 
     # predict the desired label for the incoming image.
     y_pred = model.predict_classes(x_normalize)
