@@ -1,34 +1,14 @@
 #INPUT:image_b64:string
 #OUTPUT:y_json:string
 #FUNCTION:score
-import io, cv2, base64, pickle, json
-import pandas as pd
+import tensorflow as tf
+from tensorflow import keras
 import numpy as np
-import random as rd
-from PIL import Image
-image_b64_byte = str.encode(image_b64)
-x = cv2.cvtColor(np.array(Image.open(io.BytesIO(base64.b64decode(image_b64_byte)))), cv2.COLOR_BGR2RGB)
-x_resize = cv2.resize(x, (28, 28))
-x_gray = cv2.cvtColor(x_resize, cv2.COLOR_BGR2GRAY)
-x_reshape = x_gray.reshape(1,784).astype('float32')
-x_normalize = x_reshape / 255
-rd.seed(int(sum(x_normalize[0])))
-tmp = rd.randrange(0,1000)/ 10000
-# data scoring
-model = pickle.load(open("/tsmc_model/model_files/F12-Metal1-Model2.pkl", "rb"))
-# predict the desired label for the incoming image.
-y_pred = model.predict_classes(x_normalize)
-y_pred = str(y_pred[0])
-# calculate the responding probabilities of the labels for the specific image and show the 5 label with the highest probabilities.
-y_prob = model.predict_proba(x_normalize)
-y_prob = list(y_prob[0])
-class_numeric = list(range(0, 10))
-class_string = [str(x) for x in class_numeric]
-y_prob_normalize = [(x - min(y_prob))/ (max(y_prob) - min(y_prob)) for x in y_prob]
-y_prob_dict = {'label': class_string, 'probability': y_prob_normalize}
-y_prob_df = pd.DataFrame.from_dict(y_prob_dict) 
-y_prob_df.sort_values(by=['probability'], ascending=False, inplace=True)
-y_prob_dict = pd.DataFrame.to_dict(y_prob_df[:5], orient='list')
-y_prob_dict['probability'][0] -= tmp
-tmp2 = {'y_pred': y_pred, 'y_prob': y_prob_dict}
-y_json = json.dumps(tmp2)
+import matplotlib.pyplot as plt
+fashion_mnist = keras.datasets.fashion_mnist
+(train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
+test_images = test_images / 255.0
+test_images = test_images.reshape(test_images.shape[0], 28, 28, 1)
+new_model = tf.keras.models.load_model('/tsmc_model/model_files/my_model.h5')
+predictions = new_model.predict(test_images)
+y_json = str(np.argmax(predictions[0]))
