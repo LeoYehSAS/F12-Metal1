@@ -21,7 +21,7 @@ import_path = os.path.join(MODEL_DIR, str(version))
 
 graph = tf.Graph()
 with graph.as_default():
-    with tf.Session(graph=graph2) as sess:
+    with tf.Session(graph=graph) as sess:
         meta_graph_def = tf.saved_model.loader.load(
            sess,
            [tag_constants.SERVING],
