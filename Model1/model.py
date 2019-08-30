@@ -55,7 +55,6 @@ export_path = os.path.join(MODEL_DIR, str(version))
 print('export_path = {}\n'.format(export_path))
 if os.path.isdir(export_path):
   print('\nAlready saved a model, cleaning up\n')
-  !rm -r {export_path}
 
 tf.saved_model.simple_save(
     keras.backend.get_session(),
