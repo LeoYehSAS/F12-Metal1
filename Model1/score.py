@@ -32,5 +32,5 @@ with graph.as_default():
         x = sess.graph.get_tensor_by_name('Conv1_input_5:0')
         y = sess.graph.get_tensor_by_name('Softmax_5/Softmax:0')
         y_out = sess.run(y, feed_dict = {x: [test_images[0]]})
-        y_json = np.argmax(y_out[0])
+        y_json = str(np.argmax(y_out[0]))
         print(y_json)
