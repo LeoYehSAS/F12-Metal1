@@ -1,38 +1,47 @@
-import pickle
-import pandas as pd
-from keras.models import Sequential, load_model
-from keras.layers import Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling2D
-from keras.optimizers import rmsprop
-from keras.utils import np_utils
+import tensorflow as tf
+from tensorflow import keras
 
-#DATAPREP
+# Helper libraries
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+import subprocess
 
-# model building
-model_01 = Sequential()
-model_01.add(Dense(units=256, input_dim=784, kernel_initializer='normal', activation='relu'))
-model_01.add(Dense(units=10, kernel_initializer='normal', activation='softmax'))
-model_01.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+print(tf.__version__)
 
+fashion_mnist = keras.datasets.fashion_mnist
+(train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
 
+# scale the values to 0.0 to 1.0
+train_images = train_images / 255.0
+test_images = test_images / 255.0
 
-# model training
-evolution_01 = model_01.fit(x=payload_train_x, y=payload_train_y_oneHot, validation_split=0.2, epochs=5, batch_size=128, verbose=2)
+# reshape for feeding into the model
+train_images = train_images.reshape(train_images.shape[0], 28, 28, 1)
+test_images = test_images.reshape(test_images.shape[0], 28, 28, 1)
 
+class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat',
+               'Sandal', 'Shirt', 'Sneaker', 'Bag', 'Ankle boot']
 
+print('\ntrain_images.shape: {}, of {}'.format(train_images.shape, train_images.dtype))
+print('test_images.shape: {}, of {}'.format(test_images.shape, test_images.dtype))
 
-# model performance
-prediction_01 = model_01.predict_classes(payload_test_x)
-confusion_metrics_dict = {'pred': prediction_01,'truth': payload_test_y}
-confusion_metrics_df = pd.DataFrame.from_dict(confusion_metrics_dict) 
+model = keras.Sequential([
+  keras.layers.Conv2D(input_shape=(28,28,1), filters=8, kernel_size=3, 
+                      strides=2, activation='relu', name='Conv1'),
+  keras.layers.Flatten(),
+  keras.layers.Dense(10, activation=tf.nn.softmax, name='Softmax')
+])
+model.summary()
 
-score_01 = model_01.evaluate(payload_test_x, payload_test_y_oneHot)
-comparison_metrics_dict = {'accuracy': [score_01[1]]}
-comparison_metrics_df = pd.DataFrame(comparison_metrics_dict, columns=['accuracy'])
+testing = False
+epochs = 5
 
+model.compile(optimizer=tf.train.AdamOptimizer(), 
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy'])
+model.fit(train_images, train_labels, epochs=epochs)
+model.save('/tsmc_model/model_files/my_model.h5')
 
-
-# model saving
-pickle.dump(model_01, open("/tsmc_model/model_files/F12-Metal1-Model2.pkl", "wb"))
-model_01.save('/tsmc_model/model_files/F12-Metal1-Model2.h5')
-#RT_METRICS:confusion_metrics_df
-#BT_METRICS:comparison_metrics_df
+test_loss, test_acc = model.evaluate(test_images, test_labels)
+print('\nTest accuracy: {}'.format(test_acc))
